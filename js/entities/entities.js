@@ -20,6 +20,7 @@ game.PlayerEntity = me.Entity.extend ({
 		}]);
 
 		this.body.setVelocity(5, 20);
+		// this is the movement speed of the character
 
 		this.renderable.addAnimation("idle", [78]);
 		this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
@@ -30,6 +31,9 @@ game.PlayerEntity = me.Entity.extend ({
 	update: function(delta) {
 		// this function is what happens on the fly
 		if(me.input.isKeyPressed("right")) {
+			// set the position of my x by adding the velocity to find above in set veloctiy 
+			// setVeloctiy() and multiplying it by timer.tick
+			// me.timer.tick makes the movement look smooth
 			this.body.vel.x += this.body.accel.x * me.timer.tick;
 
 		}
