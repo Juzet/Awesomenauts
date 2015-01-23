@@ -49,7 +49,7 @@ game.PlayerEntity = me.Entity.extend ({
 		else {
 			this.renderable.setCurrentAnimation("idle");
 		}
-
+		// delta is the change in time that has happens
 
 		this.body.update(delta);
 

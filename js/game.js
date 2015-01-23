@@ -14,6 +14,7 @@ var game = {
 	// Initialize the video.
 	if (!me.video.init("screen",  me.video.CANVAS, 1076, 600, true, '1.0')) {
 		// we changed the numbers after canvas because we want the game to fit our screen
+		// this is the basic set up of the game appearance
 		alert("Your browser does not support HTML5 canvas.");
 		return;
 	}
@@ -41,6 +42,8 @@ var game = {
 	// Run on game resources loaded.
 	"loaded" : function () {
 		me.pool.register("player", game.PlayerEntity, true);
+		// the character is being added and connected to the entites file
+		// true says any object you register with true you can make multiple instances of
 
 		me.state.set(me.state.MENU, new game.TitleScreen());
 		me.state.set(me.state.PLAY, new game.PlayScreen());
