@@ -11,6 +11,8 @@ game.PlayScreen = me.ScreenObject.extend({
 		// 
 
 		var player = me.pool.pull("player", 0, 420, {});
+		// we are a pulling the player out of the pool to the screen and making it appear on the screen
+		// x and y are where he is starting
 		
 		me.game.world.addChild(player, 5);
 
