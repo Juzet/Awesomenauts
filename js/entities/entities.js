@@ -24,7 +24,9 @@ game.PlayerEntity = me.Entity.extend ({
 		// this is the movement speed of the character
 
 		this.renderable.addAnimation("idle", [78]);
+		// when the character is still this is what he will look like
 		this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
+		// this is going to be what the cahracter is going to change into
 
 		this.renderable.setCurrentAnimation("idle");
 	}, 
