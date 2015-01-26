@@ -20,6 +20,7 @@ game.PlayerEntity = me.Entity.extend ({
 		}]);
 
 		this.body.setVelocity(5, 20);
+		// this a lso changes the y velocity of the character
 		// this is the movement speed of the character
 
 		this.renderable.addAnimation("idle", [78]);
@@ -35,6 +36,7 @@ game.PlayerEntity = me.Entity.extend ({
 			// setVeloctiy() and multiplying it by timer.tick
 			// me.timer.tick makes the movement look smooth
 			this.body.vel.x += this.body.accel.x * me.timer.tick;
+			this.flipX("true");
 
 		}
 		else {
