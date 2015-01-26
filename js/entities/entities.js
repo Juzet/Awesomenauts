@@ -39,15 +39,19 @@ game.PlayerEntity = me.Entity.extend ({
 			// me.timer.tick makes the movement look smooth
 			this.body.vel.x += this.body.accel.x * me.timer.tick;
 			this.flipX("true");
+			// this is flipping the animation around
 
 		}
 		else {
 			this.body.vel.x = 0;
 		}
 
-		if(this.body.vel.x !== 0) {
+		if(this.body.vel.x !== 0) 
+		//allowing the guy to not immediately walk 
+		{
 			if(!this.renderable.isCurrentAnimation("walk")) {
 				this.renderable.setCurrentAnimation("walk");
+				// this says it doesnt want to start the walk animation if it is already walking
 			}
 		}
 		else {
@@ -58,7 +62,7 @@ game.PlayerEntity = me.Entity.extend ({
 		this.body.update(delta);
 
 		this._super(me.Entity, "update", [delta]);
-
+		// this is updating the animations on the fly
 		return true;
 	}
 });
