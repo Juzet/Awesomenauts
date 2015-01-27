@@ -17,7 +17,9 @@ game.PlayScreen = me.ScreenObject.extend({
 		me.game.world.addChild(player, 5);
 
 		me.input.bindKey(me.input.KEY.RIGHT, "right");
-		
+		// me.input.bindKey(me.input.KEY.LEFT, "left");
+		// this is loading level 01 from the resources.js file
+		// uppercase and lowercase are really important because it can affect the code since it is case sensitive
 
 		// add our HUD to the game world
 		this.HUD = new game.HUD.Container();
