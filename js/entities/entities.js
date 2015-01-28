@@ -53,6 +53,15 @@ game.PlayerEntity = me.Entity.extend ({
 			// this is flipping the animation around
 
 		}
+		else if (me.input.isKeyPressed('jump')) {
+     	 // make sure we are not already jumping or falling
+      	if (!this.body.jumping && !this.body.falling) {
+        // set current vel to the maximum defined value
+        // gravity will then do the rest
+        this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
+        // set the jumping flag
+        this.body.jumping = true;
+      }}
 		else {
 			this.body.vel.x = 0;
 		}
