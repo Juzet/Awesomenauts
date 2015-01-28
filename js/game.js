@@ -42,6 +42,9 @@ var game = {
 	// Run on game resources loaded.
 	"loaded" : function () {
 		me.pool.register("player", game.PlayerEntity, true);
+		me.pool.register("PlayerBase", game.PlayerBaseEntity);
+		me.pool.register("EnemyBase", game.EnemyBaseEntity);
+		// registering the enemy and player base to the pool
 		// the character is being added and connected to the entites file
 		// true says any object you register with true you can make multiple instances of
 
