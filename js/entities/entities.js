@@ -31,6 +31,7 @@ game.PlayerEntity = me.Entity.extend ({
 		// this is going to be what the cahracter is going to change into
 
 		this.renderable.setCurrentAnimation("idle");
+		this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 70, 71, 72] , 80);
 	}, 
 
 	update: function(delta) {
@@ -53,19 +54,28 @@ game.PlayerEntity = me.Entity.extend ({
 			// this is flipping the animation around
 
 		}
-		else if (me.input.isKeyPressed('jump')) {
-     	 // make sure we are not already jumping or falling
-      	if (!this.body.jumping && !this.body.falling) {
-        // set current vel to the maximum defined value
-        // gravity will then do the rest
-        this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
-        // set the jumping flag
-        this.body.jumping = true;
-      }}
 		else {
 			this.body.vel.x = 0;
 		}
-
+		if (me.input.isKeyPressed('jump')) {
+     	 // make sure we are not already jumping or falling
+      		if (!this.body.jumping && !this.body.falling) {
+        // set current vel to the maximum defined value
+        // gravity will then do the rest
+        	this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
+        // set the jumping flag
+        	this.body.jumping = true;
+        }
+    }
+		if(me.input.isKeyPressed("attack")) {
+			if (!this.renderable.isCurrentAnimation("attack")) {
+				// set current animation to attack and once that is over
+				// goes back to the idle animations
+				this.renderable.setCurrentAnimation("attack", "idle");
+				// makes it so that the next time we start this sequence we begin from the first animation not where we left off when we switched to another animation
+				this.renderable.setAnimationFrame();
+			}
+		}
 		if(this.body.vel.x !== 0) 
 		//allowing the guy to not immediately walk 
 		{
@@ -74,11 +84,10 @@ game.PlayerEntity = me.Entity.extend ({
 				// this says it doesnt want to start the walk animation if it is already walking
 			}
 		}
-		else {
+		else if(!this.renderable.isCurrentAnimation("attack")) {
 			this.renderable.setCurrentAnimation("idle");
 		}
 		// delta is the change in time that has happens
-
 		this.body.update(delta);
 
 		this._super(me.Entity, "update", [delta]);
