@@ -18,7 +18,7 @@ game.PlayScreen = me.ScreenObject.extend({
 
 		me.input.bindKey(me.input.KEY.RIGHT, "right");
 		me.input.bindKey(me.input.KEY.LEFT, "left");
-		me.input.bindKey(me.input.KEY.UP, "jump");
+		me.input.bindKey(me.input.KEY.SPACE, "jump");
 		me.input.bindKey(me.input.KEY.A, "attack");
 		// this is loading level 01 from the resources.js file
 		// uppercase and lowercase are really important because it can affect the code since it is case sensitive
