@@ -19,7 +19,7 @@ game.PlayerEntity = me.Entity.extend ({
 			}
 		}]);
 
-		this.body.setVelocity(5, 20);
+		this.body.setVelocity(8, 20);
 		// this also changes the y velocity of the character
 		// this is the movement speed of the character
 		this.facing = "right";
@@ -61,15 +61,12 @@ game.PlayerEntity = me.Entity.extend ({
 		else {
 			this.body.vel.x = 0;
 		}
-		if (me.input.isKeyPressed('jump')) {
+		if (me.input.isKeyPressed('jump') && !this.body.jumping && !this.body.falling) {
      	 // make sure we are not already jumping or falling
-      		if (!this.body.jumping && !this.body.falling) {
+      		this.body.jumping = true;
         // set current vel to the maximum defined value
         // gravity will then do the rest
-        	this.body.vel.y = -this.body.maxVel.y * me.timer.tick;
-        // set the jumping flag
-        	this.body.jumping = true;
-        }
+        	this.body.vel.y -= this.body.accel.y * me.timer.tick;
     }
 		if(me.input.isKeyPressed("attack")) {
 			if (!this.renderable.isCurrentAnimation("attack")) {
@@ -100,26 +97,32 @@ game.PlayerEntity = me.Entity.extend ({
 		// this is updating the animations on the fly
 		return true;
 	},
+
 	collideHandler: function(response) {
-		if(response.b.type==='EnemyBaseEntity'){
+		console.log("collision");
+		if(response.b.type === 'EnemyBase'){
 			var ydif = this.pos.y - response.b.pos.y;
 			var xdif = this.pos.x - response.b.pos.x;
 
-			console.log("xdif " + xdif + " ydif " + ydif);
 
-			if (xdif>-20 && this.facing=== 'right' xdif<0) {
+			if (ydif< -40 && xdif< 70 && xdif > -35) {
+				this.body.falling = false;
+				this.body.vel.y = -1;
+			}
+
+
+			else if (xdif > -30 && this.facing === 'right' && (xdif < 0)) {
 				this.body.vel.x = 0;
 				// stops the player from moving
 				this.pos.x = this.pos.x - 1;
 				// slighty turns the character
 			}
-			else if (xdif<60 && this.facing=== 'left' && xdif>0) {
+			else if (xdif< 70 && this.facing === 'left' && xdif > 0) {
 				this.body.vel.x = 0;
 				// stops the player from moving
 				this.pos.x = this.pos.x + 1;
 				// cant walk into castle from left or right
 			}
-
 		}
 		// this is going to determine what happens when we hit the enemy entity
 	}
