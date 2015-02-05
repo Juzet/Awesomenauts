@@ -20,8 +20,10 @@ game.PlayerEntity = me.Entity.extend ({
 		}]);
 
 		this.body.setVelocity(5, 20);
-		// this a lso changes the y velocity of the character
+		// this also changes the y velocity of the character
 		// this is the movement speed of the character
+		this.facing = "right";
+		// keeps track of which direction the character is going
 		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 		// this says wherever the player goes the screen will follow him
 
@@ -40,6 +42,7 @@ game.PlayerEntity = me.Entity.extend ({
 			// set the position of my x by adding the velocity to find above in set veloctiy 
 			// setVeloctiy() and multiplying it by timer.tick
 			// me.timer.tick makes the movement look smooth
+			this.facing = "right";
 			this.body.vel.x += this.body.accel.x * me.timer.tick;
 			this.flipX(true);
 			// this is flipping the animation around
@@ -49,6 +52,7 @@ game.PlayerEntity = me.Entity.extend ({
 			// set the position of my x by adding the velocity to find above in set veloctiy 
 			// setVeloctiy() and multiplying it by timer.tick
 			// me.timer.tick makes the movement look smooth
+			this.facing = "left";
 			this.body.vel.x -= this.body.accel.x * me.timer.tick;
 			this.flipX(false);
 			// this is flipping the animation around
@@ -87,12 +91,37 @@ game.PlayerEntity = me.Entity.extend ({
 		else if(!this.renderable.isCurrentAnimation("attack")) {
 			this.renderable.setCurrentAnimation("idle");
 		}
+		me.collision.check(this, true, this.collideHandler.bind(this), true);
+		// passing a parameter into collide function
 		// delta is the change in time that has happens
 		this.body.update(delta);
 
 		this._super(me.Entity, "update", [delta]);
 		// this is updating the animations on the fly
 		return true;
+	},
+	collideHandler: function(response) {
+		if(response.b.type==='EnemyBaseEntity'){
+			var ydif = this.pos.y - response.b.pos.y;
+			var xdif = this.pos.x - response.b.pos.x;
+
+			console.log("xdif " + xdif + " ydif " + ydif);
+
+			if (xdif>-20 && this.facing=== 'right' xdif<0) {
+				this.body.vel.x = 0;
+				// stops the player from moving
+				this.pos.x = this.pos.x - 1;
+				// slighty turns the character
+			}
+			else if (xdif<60 && this.facing=== 'left' && xdif>0) {
+				this.body.vel.x = 0;
+				// stops the player from moving
+				this.pos.x = this.pos.x + 1;
+				// cant walk into castle from left or right
+			}
+
+		}
+		// this is going to determine what happens when we hit the enemy entity
 	}
 });
 
