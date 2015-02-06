@@ -106,7 +106,6 @@ game.PlayerEntity = me.Entity.extend ({
 	},
 
 	collideHandler: function(response) {
-		console.log("collision");
 		if(response.b.type === 'EnemyBase'){
 			var ydif = this.pos.y - response.b.pos.y;
 			var xdif = this.pos.x - response.b.pos.x;
@@ -263,8 +262,7 @@ game.EnemyCreep = me.Entity.extend({
 			this.health = 10;
 			this.alwaysUpdate = true;
 
-			this.setVeloctiy(3, 20);
-
+			this.setVeloctity(3, 20);
 			this.type = "EnemyCreep";
 
 			this.renderable.addAnimation("walk", [3, 4, 5]);
@@ -273,5 +271,29 @@ game.EnemyCreep = me.Entity.extend({
 			update: function() {
 
 			}
+
+});
+game.GameManager = Object.extend({
+	// this is an object but we still need and init function
+	init: function(x, y, settings) {
+		this.now = new Date().getTime();
+		this.lastCreep = new Date().getTime();
+
+
+		this.alwaysUpdate = true;
+	},
+	update: function() {
+		 this.now = new Date().getTime();
+
+		 if(Math.round(this.now/1000)%10 ===0 && (this.now - this.lastCreep >= 1000)) {
+		 	// checking to see if we have multiples of ten
+		 	// this.now - .. makes sure the spawn isnt repeating
+		 	this.lastCreep = this.now;
+		 	var creepe = me.pool.pull("EnemyCreep", 1000, 0);
+		 	me.game.world.addChild(creepe, 5);
+
+		 }
+		 return true;
+	}
 
 });
