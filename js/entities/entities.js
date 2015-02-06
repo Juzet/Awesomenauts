@@ -19,11 +19,17 @@ game.PlayerEntity = me.Entity.extend ({
 			}
 		}]);
 
-		this.body.setVelocity(8, 20);
+		this.body.setVelocity(7, 20);
 		// this also changes the y velocity of the character
 		// this is the movement speed of the character
-		this.facing = "right";
+		this.facing = "right";		
 		// keeps track of which direction the character is going
+		this.now = new Date().getTime();
+		// keeps track of what time it is in the game
+		this.lastHit = this.now;
+		// keeps track of what time it is in the game basically doing the this.now variable
+		this.lastAttack = new Date().getTime();
+		// this is stopping the attacks
 		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 		// this says wherever the player goes the screen will follow him
 
@@ -37,6 +43,7 @@ game.PlayerEntity = me.Entity.extend ({
 	}, 
 
 	update: function(delta) {
+		this.now = new Date().getTime();
 		// this function is what happens on the fly
 		if(me.input.isKeyPressed("right")) {
 			// set the position of my x by adding the velocity to find above in set veloctiy 
@@ -77,7 +84,7 @@ game.PlayerEntity = me.Entity.extend ({
 				this.renderable.setAnimationFrame();
 			}
 		}
-		if(this.body.vel.x !== 0) 
+		if(this.body.vel.x !== 0 && !this.renderable.isCurrentAnimation("attack")) 
 		//allowing the guy to not immediately walk 
 		{
 			if(!this.renderable.isCurrentAnimation("walk")) {
@@ -122,6 +129,11 @@ game.PlayerEntity = me.Entity.extend ({
 				// stops the player from moving
 				this.pos.x = this.pos.x + 1;
 				// cant walk into castle from left or right
+			}
+			if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= 1000) {
+				this.lastHit = this.now;
+				response.b.loseHealth();
+				// if we are attacking and hitting the castle it looses health
 			}
 		}
 		// this is going to determine what happens when we hit the enemy entity
@@ -227,6 +239,9 @@ game.EnemyBaseEntity = me.Entity.extend ({
 	},
 		onCollision: function() {
 
+		}, 
+		loseHealth: function() {
+			this.health--;
 		}
 	
 });
