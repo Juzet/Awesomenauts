@@ -262,13 +262,21 @@ game.EnemyCreep = me.Entity.extend({
 			this.health = 10;
 			this.alwaysUpdate = true;
 
-			this.setVeloctity(3, 20);
+			this.body.setVelocity(3, 20);
 			this.type = "EnemyCreep";
 
-			this.renderable.addAnimation("walk", [3, 4, 5]);
+			this.renderable.addAnimation("walk", [3, 4, 5], 80);
 			this.renderable.setCurrentAnimation("walk");
 	},
-			update: function() {
+			update: function(delta) {
+				this.body.vel.x -= this.body.accel.x * me.timer.tick;
+				// cahnging the drection of the creep
+				this.body.update(delta);
+
+
+				this._super(me.Entity, "update", [delta]);
+				// this is updating the animations on the fly
+				return true;	
 
 			}
 
@@ -278,8 +286,6 @@ game.GameManager = Object.extend({
 	init: function(x, y, settings) {
 		this.now = new Date().getTime();
 		this.lastCreep = new Date().getTime();
-
-
 		this.alwaysUpdate = true;
 	},
 	update: function() {
@@ -289,10 +295,10 @@ game.GameManager = Object.extend({
 		 	// checking to see if we have multiples of ten
 		 	// this.now - .. makes sure the spawn isnt repeating
 		 	this.lastCreep = this.now;
-		 	var creepe = me.pool.pull("EnemyCreep", 1000, 0);
+		 	var creepe = me.pool.pull("EnemyCreep", 1000, 0, {});
 		 	me.game.world.addChild(creepe, 5);
 
-		 }
+		 };
 		 return true;
 	}
 
