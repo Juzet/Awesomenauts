@@ -45,6 +45,7 @@ var game = {
 		me.pool.register("PlayerBase", game.PlayerBaseEntity);
 		me.pool.register("EnemyBase", game.EnemyBaseEntity);
 		me.pool.register("EnemyCreep", game.EnemyCreep, true);
+		me.pool.register("FriendCreep", game.FriendCreep,true);
 		me.pool.register("GameManager", game.GameManager);
 		// registering the enemy and player base to the pool
 		// the character is being added and connected to the entites file

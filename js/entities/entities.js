@@ -186,6 +186,10 @@ game.PlayerBaseEntity = me.Entity.extend ({
 		// telling the superclass to update
 		return true;
 	},
+
+		loseHealth:function(damage) {
+			this.heath = this.health - damage;
+		},
 		onCollision: function() {
 
 		}
@@ -261,6 +265,14 @@ game.EnemyCreep = me.Entity.extend({
 
 			this.health = 10;
 			this.alwaysUpdate = true;
+			this.attacking = false;
+			// this shows us if the enemy is currently attacking
+			this.lastAttacking = new Date().getTime();
+			// keep track of when the creep last attacks anything
+			this.lastHit = new Date().getTime();
+			// also keeps track of the last time thte creep hits anything
+			this.now = new Date().getTime();
+			// refesh every single times
 
 			this.body.setVelocity(3, 20);
 			this.type = "EnemyCreep";
@@ -269,6 +281,8 @@ game.EnemyCreep = me.Entity.extend({
 			this.renderable.setCurrentAnimation("walk");
 	},
 			update: function(delta) {
+				this.now = new Date().getTime();
+				// refesh every single time
 				this.body.vel.x -= this.body.accel.x * me.timer.tick;
 				// cahnging the drection of the creep
 				this.body.update(delta);
@@ -276,9 +290,99 @@ game.EnemyCreep = me.Entity.extend({
 
 				this._super(me.Entity, "update", [delta]);
 				// this is updating the animations on the fly
-				return true;	
+				return true;	 
 
+			},
+
+	collideHandler: function(response) {
+		if(response.b.type === 'PlayerBase'){
+		this.attacking = true;
+		// this.lastAttacking = true.now;
+
+		this.vel.x= 0;
+		this.pos.x = this.pos.x + 1;
+		// sliding to the right
+
+		if ((this.now = this.lastHit >= 100)) {
+		// setting a timer
+		this.lastHit = this.now;
+		// making sure its not hitting the b entity repeaditely so it looses health 
+		response.b.loseHealth(1);  
+		}
+
+	}
+}
+});
+game.FriendCreep = me.Entity.extend({
+	init: function(x, y, settings) {
+		this._super(me.Entity, "init", [x, y, {
+			image: "creep2",
+			width: 100,
+			height: 85,
+			spritewidth: "100",
+			spriteheight: "85",
+
+			getShape: function() {
+				return (new me.Rect(0, 0, 100, 85)).toPolygon();
+				// this shows the height of the bases
 			}
+		}]);
+
+			this.health = 10;
+			this.alwaysUpdate = true;
+			this.attacking = false;
+			// this shows us if the enemy is currently attacking
+			this.lastAttacking = new Date().getTime();
+			// keep track of when the creep last attacks anything
+			this.lastHit = new Date().getTime();
+			// also keeps track of the last time thte creep hits anything
+			this.now = new Date().getTime();
+			// refesh every single times
+
+			this.body.setVelocity(3, 20);
+			this.type = "FriendCreep";
+
+			this.renderable.addAnimation("walk", [0, 1, 2, 3, 4], 80);
+			this.renderable.setCurrentAnimation("walk");
+	},
+			update: function(delta) {
+				this.now = new Date().getTime();
+				// refesh every single time
+				this.body.vel.x += this.body.accel.x * me.timer.tick;
+
+				this.flipX(true);
+				// cahnging the drection of the creep
+				this.body.update(delta);
+
+
+				this._super(me.Entity, "update", [delta]);
+				// this is updating the animations on the fly
+				return true;	 
+
+			},
+
+	collideHandler: function(response) {
+		if(response.b.type === 'EnemyBaseEntity'){
+		this.attacking = true;
+		// this.lastAttacking = true.now;
+
+		this.vel.x= 0;
+		this.pos.x = this.pos.x + 1;
+		// sliding to the right
+
+		if ((this.now = this.lastHit >= 100)) {
+		// setting a timer
+		this.lastHit = this.now;
+		// making sure its not hitting the b entity repeaditely so it looses health 
+		response.b.loseHealth(1);  
+		}
+		
+	}
+}
+
+
+
+
 
 });
 game.GameManager = Object.extend({
@@ -297,6 +401,8 @@ game.GameManager = Object.extend({
 		 	this.lastCreep = this.now;
 		 	var creepe = me.pool.pull("EnemyCreep", 1000, 0, {});
 		 	me.game.world.addChild(creepe, 5);
+		 	var friend = me.pool.pull("FriendCreep", 200, 0, {});
+		 	me.game.world.addChild(friend, 5);
 
 		 };
 		 return true;
