@@ -18,7 +18,8 @@ game.PlayerEntity = me.Entity.extend ({
 				// rect is what the guy can walk in to
 			}
 		}]);
-
+		this.type = 'PlayerEntity';
+		this.health = 20;
 		this.body.setVelocity(7, 20);
 		// this also changes the y velocity of the character
 		// this is the movement speed of the character
@@ -104,6 +105,11 @@ game.PlayerEntity = me.Entity.extend ({
 		// this is updating the animations on the fly
 		return true;
 	},
+	loseHealth: function(damage) {
+		this.health = this.health - damage;
+		// subtracting players health
+		console.log(this.health);
+	},
 
 	collideHandler: function(response) {
 		if(response.b.type === 'EnemyBase'){
@@ -187,8 +193,8 @@ game.PlayerBaseEntity = me.Entity.extend ({
 		return true;
 	},
 
-		loseHealth:function(damage) {
-			this.heath = this.health - damage;
+		loseHealth: function(damage) {
+			this.health = this.health - damage;
 		},
 		onCollision: function() {
 
@@ -284,6 +290,8 @@ game.EnemyCreep = me.Entity.extend({
 				this.now = new Date().getTime();
 				// refesh every single time
 				this.body.vel.x -= this.body.accel.x * me.timer.tick;
+
+				me.collision.check(this, true, this.collideHandler.bind(this), true);
 				// cahnging the drection of the creep
 				this.body.update(delta);
 
@@ -296,22 +304,41 @@ game.EnemyCreep = me.Entity.extend({
 
 	collideHandler: function(response) {
 		if(response.b.type === 'PlayerBase'){
-		this.attacking = true;
-		// this.lastAttacking = true.now;
+			this.attacking = true;
+			// this.lastAttacking = true.now;
+			this.body.vel.x = 0;
+			this.pos.x = this.pos.x + 1;
+			// sliding to the right
 
-		this.vel.x= 0;
-		this.pos.x = this.pos.x + 1;
-		// sliding to the right
+		if ((this.now-this.lastHit >= 1000)) {
+			// setting a timer
+			this.lastHit = this.now;
+			// making sure its not hitting the b entity repeaditely so it looses health 
+			response.b.loseHealth(1);  
+		}
+	}
+		else if (response.b.type === 'PlayerEntity') {
+			var xdif = this.pos.x - response.b.pos.x;
+			this.attacking = true;
+			// this.lastAttacking = true.now;
 
-		if ((this.now = this.lastHit >= 100)) {
-		// setting a timer
-		this.lastHit = this.now;
-		// making sure its not hitting the b entity repeaditely so it looses health 
-		response.b.loseHealth(1);  
+		if (xdif>0) {
+			this.pos.x = this.pos.x + 1;
+			this.body.vel.x = 0;
+		}
+
+		if ((this.now = this.lastHit >= 1000 && xdif> 0)) {
+			// if the osition is to the right it is going to have a bigger value than the one to the left
+			// setting a timer
+			this.lastHit = this.now;
+			// making sure its not hitting something multiple so it looses health 
+			response.b.loseHealth(1); 
+
 		}
 
 	}
 }
+
 });
 game.FriendCreep = me.Entity.extend({
 	init: function(x, y, settings) {
@@ -379,11 +406,6 @@ game.FriendCreep = me.Entity.extend({
 		
 	}
 }
-
-
-
-
-
 });
 game.GameManager = Object.extend({
 	// this is an object but we still need and init function
