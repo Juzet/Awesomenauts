@@ -75,7 +75,8 @@ game.PlayerEntity = me.Entity.extend ({
         // set current vel to the maximum defined value
         // gravity will then do the rest
         	this.body.vel.y -= this.body.accel.y * me.timer.tick;
-    }
+        	me.audio.play("jump");
+        }
 		if(me.input.isKeyPressed("attack")) {
 			if (!this.renderable.isCurrentAnimation("attack")) {
 				// set current animation to attack and once that is over

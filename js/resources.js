@@ -29,9 +29,15 @@ game.resources = [
 	 * @example
 	 * {name: "example_bgm", type: "audio", src: "data/bgm/"},
 	 */	
-
+	{name: "ariana1", type: "audio", src: "data/bgm/"},
+	{name: "blankSpace", type: "audio", src: "data/bgm/"},
+	{name: "katy1", type: "audio", src: "data/bgm/"},
+	{name: "miley", type: "audio", src: "data/bgm/"},
+	 
 	/* Sound effects. 
 	 * @example
 	 * {name: "example_sfx", type: "audio", src: "data/sfx/"}
 	 */
+	{name: "jump", type: "audio", src: "data/sfx/"},
+
 ];
