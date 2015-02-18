@@ -142,6 +142,33 @@ game.PlayerEntity = me.Entity.extend ({
 				// if we are attacking and hitting the castle it looses health
 			}
 		}
+		else if(response.b.type==='EnemyCreep') {
+			var xdif = this.pos.x - response.b.pos.x;
+			var ydif = this.pos.y - response.b.pos.y;
+			if (xdif >0) {
+				this.pos.x = this.pos.x +1;
+			// pushing the player a little to the right if coming in from the right and allowing us not to crash into the creep
+			if(this.facing ==="left") {
+					this.body.vel.x = 0;
+				}
+			}
+			else {
+				this.pos.x = this.pos.x - 1;
+			//pushing the player to the left if coming in from the left, and allowing us not to crash into the creep 
+			if(this.facing ==="right") {
+					this.body.vel.x = 0;
+				}
+
+			}
+			if(this.renderable.isCurrentAnimation("attack")&& this.now-this.lastHit >= 1000 && (Math.abs(ydif) <= 40) && (((xdif >0) && this.facing==="left") || ((xdif<0 && this.facing==="right")))
+				) {
+				// if the character is to the right of the creep and you are facing left it should be able to be attacked and vice vera
+				// making sure we can hit the creep
+				this.lastHit = this.now;
+				response.b.loseHealth(1);
+				// making the creep loose one energy when hit
+			}
+		}
 		// this is going to determine what happens when we hit the enemy entity
 	}
 });
@@ -286,8 +313,18 @@ game.EnemyCreep = me.Entity.extend({
 
 			this.renderable.addAnimation("walk", [3, 4, 5], 80);
 			this.renderable.setCurrentAnimation("walk");
-	},
+		},
+
+			loseHealth: function(damage) {
+
+				this.health = this.health - damage;
+
+			},
 			update: function(delta) {
+				if (this.health <= 0) {
+					me.game.world.removeChild(this);
+					// emeny get killed and kicked out of the game
+				}
 				this.now = new Date().getTime();
 				// refesh every single time
 				this.body.vel.x -= this.body.accel.x * me.timer.tick;
@@ -304,6 +341,7 @@ game.EnemyCreep = me.Entity.extend({
 			},
 
 	collideHandler: function(response) {
+		console.log(this.health);
 		if(response.b.type === 'PlayerBase'){
 			this.attacking = true;
 			// this.lastAttacking = true.now;
