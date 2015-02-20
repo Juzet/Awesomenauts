@@ -48,13 +48,9 @@ game.PlayerEntity = me.Entity.extend ({
 	update: function(delta) {
 		this.now = new Date().getTime();
 		// this function is what happens on the fly
-		if (this.health <=0) {
+		if (this.health <= 0) {
 			this.dead = true;
 			// this is killing my player enemy
-			this.pos.x = 10;
-			this.pos.y = 0;
-			this.health = game.data.playerHealth;
-			// making sure when you die you respawn with full health
 		}
 		if(me.input.isKeyPressed("right")) {
 			// set the position of my x by adding the velocity to find above in set veloctiy 
@@ -137,13 +133,13 @@ game.PlayerEntity = me.Entity.extend ({
 			else if (xdif > -30 && this.facing === 'right' && (xdif < 0)) {
 				this.body.vel.x = 0;
 				// stops the player from moving
-				this.pos.x = this.pos.x - 1;
+				// this.pos.x = this.pos.x - 1;
 				// slighty turns the character
 			}
 			else if (xdif< 70 && this.facing === 'left' && xdif > 0) {
 				this.body.vel.x = 0;
 				// stops the player from moving
-				this.pos.x = this.pos.x + 1;
+				// this.pos.x = this.pos.x + 1;
 				// cant walk into castle from left or right
 			}
 			if(this.renderable.isCurrentAnimation("attack") && this.now-this.lastHit >= game.data.playerAttackTimer) {
@@ -163,7 +159,7 @@ game.PlayerEntity = me.Entity.extend ({
 				}
 			}
 			else {
-				this.pos.x = this.pos.x - 1;
+				// this.pos.x = this.pos.x - 1;
 			//pushing the player to the left if coming in from the left, and allowing us not to crash into the creep 
 			if(this.facing ==="right") {
 					this.body.vel.x = 0;
@@ -351,7 +347,7 @@ game.EnemyCreep = me.Entity.extend({
 			},
 
 	collideHandler: function(response) {
-		console.log(this.health);
+
 		if(response.b.type === 'PlayerBase'){
 			this.attacking = true;
 			// this.lastAttacking = true.now;
@@ -376,7 +372,7 @@ game.EnemyCreep = me.Entity.extend({
 			this.body.vel.x = 0;
 		}
 
-		if ((this.now = this.lastHit >= 1000 && xdif> 0)) {
+		if ((this.now - this.lastHit >= 1000 && xdif> 0)) {
 			// if the osition is to the right it is going to have a bigger value than the one to the left
 			// setting a timer
 			this.lastHit = this.now;
@@ -465,6 +461,12 @@ game.GameManager = Object.extend({
 	},
 	update: function() {
 		 this.now = new Date().getTime();
+		 
+		 if(game.data.player.dead) {
+		 	me.game.world.removeChild(game.data.player);
+		 	me.state.current().resetPlayer(10, 0);
+
+		 }
 
 		 if(Math.round(this.now/1000)%10 ===0 && (this.now - this.lastCreep >= 1000)) {
 		 	// checking to see if we have multiples of ten
