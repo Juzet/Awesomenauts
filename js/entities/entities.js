@@ -31,6 +31,8 @@ game.PlayerEntity = me.Entity.extend ({
 		this.lastHit = this.now;
 		// keeps track of what time it is in the game basically doing the this.now variable
 		this.dead = false;
+		// local variable being kept track in the fly
+		this.attack = game.data.playerAttack;
 		this.lastAttack = new Date().getTime();
 		// this is stopping the attacks
 		me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
@@ -115,7 +117,7 @@ game.PlayerEntity = me.Entity.extend ({
 	loseHealth: function(damage) {
 		this.health = this.health - damage;
 		// subtracting players health
-		console.log(this.health);
+		
 	},
 
 	collideHandler: function(response) {
@@ -171,6 +173,12 @@ game.PlayerEntity = me.Entity.extend ({
 				// if the character is to the right of the creep and you are facing left it should be able to be attacked and vice vera
 				// making sure we can hit the creep
 				this.lastHit = this.now;
+				// if the creeps health is less than our attack, execute code in our statements
+			if(response.b.health <= game.data.playerAttack) {
+				// adds one gold for a creep kill
+				game.data.gold += 1;
+				console.log("Current gold: " + game.data.gold);
+			}
 				response.b.loseHealth(game.data.playerAttack);
 				// making the creep loose one energy when hit
 			}
@@ -486,6 +494,8 @@ game.GameManager = Object.extend({
 	init: function(x, y, settings) {
 		this.now = new Date().getTime();
 		this.lastCreep = new Date().getTime();
+		this.paused = false;
+		// player shouldnt get more gold if the game is paused
 		this.alwaysUpdate = true;
 	},
 	update: function() {
@@ -496,6 +506,14 @@ game.GameManager = Object.extend({
 		 	me.state.current().resetPlayer(10, 0);
 
 		 }
+		 // creep is going to spawn at the same time the gold comes
+		 if(Math.round(this.now/1000)%20 ===0 && (this.now - this.lastCreep >= 1000)) {
+			game.data.gold += 1;
+			console.log("Current gold: " + game.data.gold);
+		 
+		 };
+
+
 
 		 if(Math.round(this.now/1000)%10 ===0 && (this.now - this.lastCreep >= 1000)) {
 		 	// checking to see if we have multiples of ten

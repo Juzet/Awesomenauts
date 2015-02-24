@@ -19,14 +19,15 @@ game.TitleScreen = me.ScreenObject.extend({
 		this.font.draw(renderer.getContext(), "Awesomenauts", 450, 130);
 		// when we are drawing something we are passing in the context of where we are
 		this.font.draw(renderer.getContext(), "Press ENTER to play", 250, 530);
-		}         })));
+		}        
+			 })));
 
-			this.handler = me.event.subscribe(me.event.KEYDOWN, function (action, keyCode, edge){
+			this.handler = me.event.subscribe(me.event.KEYDOWN, function(action, keyCode, edge){
 			// this is listening for someone pressing the enter button
 			if (action === "start") {
 				me.state.change(me.state.PLAY);
 				}
-			});
+			})
 			
 	},
 	
@@ -35,7 +36,7 @@ game.TitleScreen = me.ScreenObject.extend({
 	 *  action to perform when leaving this screen (state change)
 	 */
 	onDestroyEvent: function() {
-		me.input.unbindKEY(me.input.KEY.ENTER); // TODO
+		me.input.unbindKey(me.input.KEY.ENTER); // TODO
 		me.event.unsubscribe(this.handler);
 	}
 });
