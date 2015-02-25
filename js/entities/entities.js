@@ -74,41 +74,10 @@ game.PlayerEntity = me.Entity.extend ({
 	update: function(delta) {
 		this.now = new Date().getTime();
 		// this function is what happens on the fly
-		if (this.health <= 0) {
-			this.dead = true;
-			// this is killing my player enemy
-		}
-		if(me.input.isKeyPressed("right")) {
-			// set the position of my x by adding the velocity to find above in set veloctiy 
-			// setVeloctiy() and multiplying it by timer.tick
-			// me.timer.tick makes the movement look smooth
-			this.facing = "right";
-			this.body.vel.x += this.body.accel.x * me.timer.tick;
-			this.flipX(true);
-			// this is flipping the animation around
+		this.dead = checkIfDead();
 
-		}
-		else if(me.input.isKeyPressed("left")) {
-			// set the position of my x by adding the velocity to find above in set veloctiy 
-			// setVeloctiy() and multiplying it by timer.tick
-			// me.timer.tick makes the movement look smooth
-			this.facing = "left";
-			this.body.vel.x -= this.body.accel.x * me.timer.tick;
-			this.flipX(false);
-			// this is flipping the animation around
+		this.checkKeyPressesAndMove();
 
-		}
-		else {
-			this.body.vel.x = 0;
-		}
-		if (me.input.isKeyPressed('jump') && !this.body.jumping && !this.body.falling) {
-     	 // make sure we are not already jumping or falling
-      		this.body.jumping = true;
-        // set current vel to the maximum defined value
-        // gravity will then do the rest
-        	this.body.vel.y -= this.body.accel.y * me.timer.tick;
-        	me.audio.play("jump");
-        }
 		if(me.input.isKeyPressed("attack")) {
 			if (!this.renderable.isCurrentAnimation("attack")) {
 				// set current animation to attack and once that is over
@@ -138,6 +107,58 @@ game.PlayerEntity = me.Entity.extend ({
 		// this is updating the animations on the fly
 		return true;
 	},
+
+	checkIfDead: function: () {
+		if (this.health <= 0) {
+			return true;
+			// this is killing my player enemy
+		}
+	},
+
+	checkKeyPressesAndMove: () {
+
+		if(me.input.isKeyPressed("right")) {
+			this.moveRight();
+
+		}
+		else if(me.input.isKeyPressed("left")) {
+			this.moveLeft();
+
+		}
+		else {
+			this.body.vel.x = 0;
+		}
+		if (me.input.isKeyPressed('jump') && !this.body.jumping && !this.body.falling) {
+     	 	this.jump();
+        }
+	},
+	moveRight: function() {
+		// set the position of my x by adding the velocity to find above in set veloctiy 
+			// setVeloctiy() and multiplying it by timer.tick
+			// me.timer.tick makes the movement look smooth
+			this.facing = "right";
+			this.body.vel.x += this.body.accel.x * me.timer.tick;
+			this.flipX(true);
+			// this is flipping the animation around
+	},
+	moveLeft: function() {
+		// set the position of my x by adding the velocity to find above in set veloctiy 
+			// setVeloctiy() and multiplying it by timer.tick
+			// me.timer.tick makes the movement look smooth
+			this.facing = "left";
+			this.body.vel.x -= this.body.accel.x * me.timer.tick;
+			this.flipX(false);
+			// this is flipping the animation around
+	},
+	jump: function() {
+		 // make sure we are not already jumping or falling
+      		this.body.jumping = true;
+        // set current vel to the maximum defined value
+        // gravity will then do the rest
+        	this.body.vel.y -= this.body.accel.y * me.timer.tick;
+        	me.audio.play("jump");
+	}
+
 	loseHealth: function(damage) {
 		this.health = this.health - damage;
 		// subtracting players health
