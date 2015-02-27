@@ -108,14 +108,14 @@ game.PlayerEntity = me.Entity.extend ({
 		return true;
 	},
 
-	checkIfDead: function: () {
+	checkIfDead: function () {
 		if (this.health <= 0) {
 			return true;
 			// this is killing my player enemy
 		}
 	},
 
-	checkKeyPressesAndMove: () {
+	checkKeyPressesAndMove: function () {
 
 		if(me.input.isKeyPressed("right")) {
 			this.moveRight();
@@ -157,7 +157,7 @@ game.PlayerEntity = me.Entity.extend ({
         // gravity will then do the rest
         	this.body.vel.y -= this.body.accel.y * me.timer.tick;
         	me.audio.play("jump");
-	}
+	},
 
 	loseHealth: function(damage) {
 		this.health = this.health - damage;
@@ -167,6 +167,13 @@ game.PlayerEntity = me.Entity.extend ({
 
 	collideHandler: function(response) {
 		if(response.b.type === 'EnemyBase'){
+			this.collideWithEnemyBase(response);	
+		}
+		else if(response.b.type==='EnemyCreep') {
+			this.collideWithEnemyCreep(response);	
+		},
+
+	collideWithEnemyBase: function () {
 			var ydif = this.pos.y - response.b.pos.y;
 			var xdif = this.pos.x - response.b.pos.x;
 
@@ -194,10 +201,18 @@ game.PlayerEntity = me.Entity.extend ({
 				response.b.loseHealth(game.data.playerAttack);
 				// if we are attacking and hitting the castle it looses health
 			}
-		}
-		else if(response.b.type==='EnemyCreep') {
-			var xdif = this.pos.x - response.b.pos.x;
+	}, 
+	collideWithEnemyCreep: function() {
+		var xdif = this.pos.x - response.b.pos.x;
 			var ydif = this.pos.y - response.b.pos.y;
+			
+			this.stopMovement(xdif);
+			if (this.checkAttack(xif, ydif, response)) {
+				this.hitCreep(response);
+			};
+			
+	},
+	stopMovement: function () {
 			if (xdif >0) {
 				this.pos.x = this.pos.x +1;
 			// pushing the player a little to the right if coming in from the right and allowing us not to crash into the creep
@@ -206,20 +221,29 @@ game.PlayerEntity = me.Entity.extend ({
 				}
 			}
 			else {
-				// this.pos.x = this.pos.x - 1;
 			//pushing the player to the left if coming in from the left, and allowing us not to crash into the creep 
 			if(this.facing ==="right") {
 					this.body.vel.x = 0;
 				}
 
 			}
-			if(this.renderable.isCurrentAnimation("attack")&& this.now-this.lastHit >= game.data.playerAttackTimer && (Math.abs(ydif) <= 40) && (((xdif >0) && this.facing==="left") || ((xdif<0 && this.facing==="right")))
+		},
+
+	checkAttack: function (xdif, ydif) {
+		if(this.renderable.isCurrentAnimation("attack")&& this.now-this.lastHit >= game.data.playerAttackTimer && (Math.abs(ydif) <= 40) && (((xdif >0) && this.facing==="left") || ((xdif<0 && this.facing==="right")))
 				) {
 				// if the character is to the right of the creep and you are facing left it should be able to be attacked and vice vera
 				// making sure we can hit the creep
 				this.lastHit = this.now;
 				// if the creeps health is less than our attack, execute code in our statements
-			if(response.b.health <= game.data.playerAttack) {
+				return true;
+
+		}
+				return false;
+		},
+
+	hitCreep: function () {
+		if(response.b.health <= game.data.playerAttack) {
 				// adds one gold for a creep kill
 				game.data.gold += 1;
 				console.log("Current gold: " + game.data.gold);
@@ -227,7 +251,8 @@ game.PlayerEntity = me.Entity.extend ({
 				response.b.loseHealth(game.data.playerAttack);
 				// making the creep loose one energy when hit
 			}
-		}
 		// this is going to determine what happens when we hit the enemy entity
-	}
+	},
+	// all these functions are simply breaking down the code into diiferent funcitons so it is easier for us
+
 });
