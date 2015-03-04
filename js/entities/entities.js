@@ -2,7 +2,7 @@
 game.PlayerEntity = me.Entity.extend ({
 		init: function(x, y, settings) {
 		// this is a class
-		this.setSuper();
+		this.setSuper(x,y);
 		// going to make the init function easier
 		this.setPlayerTimers();
 		// setting timers
@@ -19,7 +19,7 @@ game.PlayerEntity = me.Entity.extend ({
 		
 	},
 	// making functions so that the code can look clean and function easier
-	setSuper: function() {
+	setSuper: function(x,y) {
 		// melon js uses this constructor on most things to help us set up
 		this._super(me.Entity, "init", [x, y, {
 			// this means reaching to the constructor of entites
@@ -60,6 +60,7 @@ game.PlayerEntity = me.Entity.extend ({
 		// keeps track of which direction the character is going
 		// this is the movement speed of the character
 		this.dead = false;
+		this.attacking = false;
 		// local variable being kept track in the fly
 	},
 
@@ -74,7 +75,7 @@ game.PlayerEntity = me.Entity.extend ({
 	update: function(delta) {
 		this.now = new Date().getTime();
 		// this function is what happens on the fly
-		this.dead = checkIfDead();
+		this.dead = this.checkIfDead();
 
 		this.checkKeyPressesAndMove();
 
@@ -131,6 +132,7 @@ game.PlayerEntity = me.Entity.extend ({
 		if (me.input.isKeyPressed('jump') && !this.body.jumping && !this.body.falling) {
      	 	this.jump();
         }
+        this.attacking = me.input.isKeyPressed("attack");
 	},
 	moveRight: function() {
 		// set the position of my x by adding the velocity to find above in set veloctiy 
@@ -171,9 +173,10 @@ game.PlayerEntity = me.Entity.extend ({
 		}
 		else if(response.b.type==='EnemyCreep') {
 			this.collideWithEnemyCreep(response);	
-		},
+		}
+	},
 
-	collideWithEnemyBase: function () {
+	collideWithEnemyBase: function (response) {
 			var ydif = this.pos.y - response.b.pos.y;
 			var xdif = this.pos.x - response.b.pos.x;
 
@@ -202,18 +205,18 @@ game.PlayerEntity = me.Entity.extend ({
 				// if we are attacking and hitting the castle it looses health
 			}
 	}, 
-	collideWithEnemyCreep: function() {
+	collideWithEnemyCreep: function(response) {
 		var xdif = this.pos.x - response.b.pos.x;
-			var ydif = this.pos.y - response.b.pos.y;
+		var ydif = this.pos.y - response.b.pos.y;
 			
 			this.stopMovement(xdif);
-			if (this.checkAttack(xif, ydif, response)) {
+			if (this.checkAttack(xdif, ydif)) {
 				this.hitCreep(response);
 			};
 			
 	},
-	stopMovement: function () {
-			if (xdif >0) {
+	stopMovement: function (xdif) {
+			if (xdif > 0) {
 				this.pos.x = this.pos.x +1;
 			// pushing the player a little to the right if coming in from the right and allowing us not to crash into the creep
 			if(this.facing ==="left") {
@@ -237,12 +240,11 @@ game.PlayerEntity = me.Entity.extend ({
 				this.lastHit = this.now;
 				// if the creeps health is less than our attack, execute code in our statements
 				return true;
-
+ 	
 		}
 				return false;
 		},
-
-	hitCreep: function () {
+	hitCreep: function (response) {
 		if(response.b.health <= game.data.playerAttack) {
 				// adds one gold for a creep kill
 				game.data.gold += 1;
@@ -252,7 +254,6 @@ game.PlayerEntity = me.Entity.extend ({
 				// making the creep loose one energy when hit
 			}
 		// this is going to determine what happens when we hit the enemy entity
-	},
 	// all these functions are simply breaking down the code into diiferent funcitons so it is easier for us
 
 });
