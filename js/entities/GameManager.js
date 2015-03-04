@@ -56,3 +56,22 @@ game.HeroDeathManager = Object.extend({
 	}
 
 });
+
+game.ExperienceManager = Object.extend ({
+	init: function(x, y, settings) {
+		this.alwaysUpdate = true;
+	}
+
+	update: function(){
+		// none of these get called until one of the flags are set 
+		if(game.data.win === true) {
+		//this is going to do something if I win 
+		game.data.exp += 10;
+		} 
+		else if(game.data.win === false) {
+		// this will do something if I loose
+		game.data.exp += 1;
+		}
+		return true;
+	}
+});
