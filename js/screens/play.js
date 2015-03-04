@@ -13,11 +13,13 @@ game.PlayScreen = me.ScreenObject.extend({
 		
 		// we are a pulling the player out of the pool to the screen and making it appear on the screen
 		// x and y are where he is starting
-		var gamemanager = me.pool.pull("GameManager", 0, 0, {});
-		me.game.world.addChild(gamemanager, 0);
-		
-		
+		var gameTimerManager = me.pool.pull("GameTimerManager", 0, 0, {});
+		me.game.world.addChild(gameTimerManager, 0);
 
+		var HeroDeathManager = me.pool.pull("HeroDeathManager", 0, 0, {});
+		me.game.world.addChild(gameHeroDeathManager, 0);
+		
+		
 		me.input.bindKey(me.input.KEY.RIGHT, "right");
 		me.input.bindKey(me.input.KEY.LEFT, "left");
 		me.input.bindKey(me.input.KEY.SPACE, "jump");

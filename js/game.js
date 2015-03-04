@@ -6,21 +6,18 @@ var game = {
 	data : {
 		// score
 		score : 0,
-		enemyBaseHealth: 10,
+		enemyBaseHealth: 1,
 		playerBaseHealth: 10,
-		enemyCreepHealth: 10,
-		playerHealth: 10,
+		enemyCreepHealth: 1,
+		playerHealth: 20,
 		enemyCreepAttack: 1,
 		playerAttack: 1,
-		// orcBaseDamage: 10,
-		// orcBaseHealth: 100,
-		// orcbaseSpped: 3,
-		// orcBaseDefense: 0,
 		playerAttackTimer: 1000,
 		enemyCreepAttackTimer: 1000,
 		playerMoveSpeed: 5,
 		creepMoveSpeed: 5,
 		gameManager: "",
+		HeroDeathManager: "";
 		player: "",
 		exp: 0,
 		// these are going to be used to buy stuff
@@ -70,7 +67,8 @@ var game = {
 		me.pool.register("EnemyBase", game.EnemyBaseEntity);
 		me.pool.register("EnemyCreep", game.EnemyCreep, true);
 		me.pool.register("FriendCreep", game.FriendCreep,true);
-		me.pool.register("GameManager", game.GameManager);
+		me.pool.register("GameManager", game.GameTimerManager);
+		me.pool.register("HeroDeathManager", game.GameHeroDeathManager);
 		// registering the enemy and player base to the pool
 		// the character is being added and connected to the entites file
 		// true says any object you register with true you can make multiple instances of
