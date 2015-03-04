@@ -17,7 +17,7 @@ var game = {
 		playerMoveSpeed: 5,
 		creepMoveSpeed: 5,
 		gameManager: "",
-		HeroDeathManager: "";
+		HeroDeathManager: "",
 		player: "",
 		exp: 0,
 		// these are going to be used to buy stuff
@@ -68,8 +68,8 @@ var game = {
 		me.pool.register("EnemyBase", game.EnemyBaseEntity);
 		me.pool.register("EnemyCreep", game.EnemyCreep, true);
 		me.pool.register("FriendCreep", game.FriendCreep,true);
-		me.pool.register("GameManager", game.GameTimerManager);
-		me.pool.register("HeroDeathManager", game.GameHeroDeathManager);
+		me.pool.register("GameTimerManager", game.GameTimerManager);
+		me.pool.register("HeroDeathManager", game.HeroDeathManager);
 		me.pool.register("ExperienceManager", game.ExperienceManager);
 		// registering the enemy and player base to the pool
 		// the character is being added and connected to the entites file

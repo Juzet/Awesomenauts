@@ -193,7 +193,7 @@ game.PlayerEntity = me.Entity.extend ({
 				// this.pos.x = this.pos.x - 1;
 				// slighty turns the character
 			}
-			else if (xdif< 70 && this.facing === 'left' && xdif > 0) {
+			else if (xdif< 70 && this.facing === 'left' && (xdif > 0)) {
 				this.body.vel.x = 0;
 				// stops the player from moving
 				// this.pos.x = this.pos.x + 1;
