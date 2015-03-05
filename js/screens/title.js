@@ -5,38 +5,46 @@ game.TitleScreen = me.ScreenObject.extend({
 	onResetEvent: function() {	
 		me.game.world.addChild(new me.Sprite(0, 0, me.loader.getImage('title-screen')), -10); 
 		// this is showing the title screen
-		me.input.bindKey(me.input.KEY.ENTER, "start");
+
 
 		me.game.world.addChild(new (me.Renderable.extend({
 			init: function() {
-				this._super(me.Renderable, 'init', [510, 30, me.game.viewport.width, me.game.viewport.height])
+				this._super(me.Renderable, 'init', [270, 240, 300, 50]);
 				// making a call to the super function
 				this.font = new me.Font("Arial", 46, "white");
 				// setting a font on the screen
+				me.input.registerPointerEvent("pointerdown",this, this.newGame.bind(this), true);
+				// this is waiting for the mouse to be clicked to start the game
 			}, 
 
             draw: function(renderer) {
-		this.font.draw(renderer.getContext(), "Awesomenauts", 450, 130);
-		// when we are drawing something we are passing in the context of where we are
-		this.font.draw(renderer.getContext(), "Press ENTER to play", 250, 530);
-		}        
-			 })));
+				this.font.draw(renderer.getContext(), "START A NEW GAME", this.pos.x, this.pos.y);
+				// when we are drawing something we are passing in the context of where we are
+			},
 
-			this.handler = me.event.subscribe(me.event.KEYDOWN, function(action, keyCode, edge){
-			// this is listening for someone pressing the enter button
-			if (action === "start") {
-				me.state.change(me.state.PLAY);
-				}
-			})
-			
-	},
+		update: function(dt) {
+			return true;
+			// making sure we are listening to stuff
+		},  
+		newGame: function() {
+			me.input.releasePointerEvent('pointerdown', this);
+			me.save.remove('exp');
+			me.save.remove('exp1');
+			me.save.remove('exp2');
+			me.save.remove('exp3');
+			me.save.remove('exp4');
+			me.state.change(me.state.PLAY);
+
+		}    
+			 
+
+		})));
+	  },
 	
 	
 	/**	
 	 *  action to perform when leaving this screen (state change)
 	 */
 	onDestroyEvent: function() {
-		me.input.unbindKey(me.input.KEY.ENTER); // TODO
-		me.event.unsubscribe(this.handler);
 	}
 });
