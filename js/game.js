@@ -26,8 +26,10 @@ var game = {
 		exp2: 0,
 		exp3: 0,
 		exp4: 0,
-		win: ""
-		// variable thata will affeect the movement etc of the character
+		win: "",
+		pausePos: "",
+		buyScreen: ""
+		// variable that will affeect the movement etc of the character
 	},
 	
 	
@@ -74,6 +76,7 @@ var game = {
 		me.pool.register("GameTimerManager", game.GameTimerManager);
 		me.pool.register("HeroDeathManager", game.HeroDeathManager);
 		me.pool.register("ExperienceManager", game.ExperienceManager);
+		me.pool.register("SpendGold", game.SpendGold);
 		// registering the enemy and player base to the pool
 		// the character is being added and connected to the entites file
 		// true says any object you register with true you can make multiple instances of
