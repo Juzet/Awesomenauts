@@ -92,6 +92,7 @@ game.ExperienceManager = Object.extend ({
 		me.save.exp2 = 4;
 	}
 });
+
 game.SpendGold = Object.extend ({
 	init: function(x, y, settings) {
 		this.now = new Date().getTime();
@@ -104,7 +105,8 @@ game.SpendGold = Object.extend ({
 
 	update: function() {
 		this.now = new Date().getTime();
-		if (me.input.isKeyPressed("buy") && this.now-this.lastBuy >= 1000 ) {
+		
+		if (me.input.isKeyPressed("buy") && this.now-this.lastBuy >= 1000) {
 			this.lastBuy = this.now;
 			if (!this.buying) {
 				this.startBuying();
@@ -120,9 +122,9 @@ game.SpendGold = Object.extend ({
 		this.buying = true;
 		me.state.pause(me.state.PLAY);
 		game.data.pausePos = me.game.viewport.localToWorld(0, 0);
-		game.data.buyScreen = new me.Sprite(game.data.pausePos.x, game.data.pausePos.y, me.loader.getImage('gold-screen'));
-		game.data.buyScreen.updateWhenPaused = true;
-		game.data.buyScreen.setOpacity(0.8);
+		game.data.buyscreen = new me.Sprite(game.data.pausePos.x, game.data.pausePos.y, me.loader.getImage('gold-screen'));
+		game.data.buyscreen.updateWhenPaused = true;
+		game.data.buyscreen.setOpacity(0.8);
 		me.game.world.addChild(game.data.buyscreen, 34);
 		game.data.player.body.setVelocity(0, 0);
 	},
