@@ -1,4 +1,3 @@
-
 /* Game namespace */
 var game = {
 
@@ -28,7 +27,8 @@ var game = {
 		exp4: 0,
 		win: "",
 		pausePos: "",
-		buyScreen: ""
+		buyScreen: "",
+		buyText: ""
 		// variable that will affeect the movement etc of the character
 	},
 	

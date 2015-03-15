@@ -120,19 +120,60 @@ game.SpendGold = Object.extend ({
 	}, 
 	startBuying: function () {
 		this.buying = true;
-		me.state.pause(me.state.PLAY);
 		game.data.pausePos = me.game.viewport.localToWorld(0, 0);
 		game.data.buyscreen = new me.Sprite(game.data.pausePos.x, game.data.pausePos.y, me.loader.getImage('gold-screen'));
 		game.data.buyscreen.updateWhenPaused = true;
 		game.data.buyscreen.setOpacity(0.8);
 		me.game.world.addChild(game.data.buyscreen, 34);
 		game.data.player.body.setVelocity(0, 0);
+		me.state.pause(me.state.PLAY);
+		me.input.bindKey(me.input.KEY.F1, "F1", true);
+		me.input.bindKey(me.input.KEY.F2, "F2", true);
+		me.input.bindKey(me.input.KEY.F3, "F3", true);
+		me.input.bindKey(me.input.KEY.F4, "F4", true);
+		me.input.bindKey(me.input.KEY.F5, "F5", true);
+		me.input.bindKey(me.input.KEY.F6, "F6", true);
+		// this is controlling the functions
+		// this is also initiating functions
+		this.setBuyText();
 	},
+
+	setBuyText: function () {
+		game.data.buytext = new (me.Renderable.extend({
+			init: function() {
+				this._super(me.Renderable, 'init', [game.data.pausePos.x, game.data.pausePos.y, 1, 1]);
+				//  300 50
+				// making a call to the super function
+				this.font = new me.Font("Arial", 26, "white");
+				// setting a font on the screen
+				this.updateWhenPaused = true;
+				this.alwaysUpdate = true;
+			}, 
+
+            draw: function(renderer) {
+				this.font.draw(renderer.getContext(), "PRESS F1-F6 TO BUY, B TO EXIT", this.pos.x, this.pos.y);
+				// when we are drawing something we are passing in the context of where we are
+			}   
+
+		}));
+		me.game.world.addChild(game.data.buytext, 35);
+
+	},
+
 	stopBuying: function () {
 		this.buying = false;
 		me.state.resume(me.state.PLAY);
 		game.data.player.body.setVelocity(game.data.playerMoveSpeed, 20);
 		me.game.world.removeChild(game.data.buyscreen);
+		me.input.unbindKey(me.input.KEY.F1, "F1", true);
+		me.input.unbindKey(me.input.KEY.F2, "F2", true);
+		me.input.unbindKey(me.input.KEY.F3, "F3", true);
+		me.input.unbindKey(me.input.KEY.F4, "F4", true);
+		me.input.unbindKey(me.input.KEY.F5, "F5", true);
+		me.input.unbindKey(me.input.KEY.F6, "F6", true);
+		me.game.world.removeChild(game.data.buytext);
+		// these are stopping the functions
+		// this is unbinding the functions for when you are not buying
 	}
 });
 
