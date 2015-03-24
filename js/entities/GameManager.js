@@ -153,6 +153,12 @@ game.SpendGold = Object.extend ({
             draw: function(renderer) {
 				this.font.draw(renderer.getContext(), "PRESS F1-F6 TO BUY, B TO EXIT", this.pos.x, this.pos.y);
 				// when we are drawing something we are passing in the context of where we are
+				this.font.draw(renderer.getContext(), "Skill 1: Increase Damage. Current Level: " + game.data.exp1 + " Cost: " + ((game.data.exp1+1)*10), this.pos.x, this.pos.y + 40);
+				this.font.draw(renderer.getContext(), "Skill 2: Run faster. Current Level: " + game.data.exp2 + " Cost: " + ((game.data.exp2+1)*10), this.pos.x, this.pos.y + 80);
+				this.font.draw(renderer.getContext(), "Skill 3: Increase Health. Current Level: " + game.data.exp3 + " Cost: " + ((game.data.exp3+1)*10), this.pos.x, this.pos.y + 120);
+				this.font.draw(renderer.getContext(), "Q Ability: Speed Burst. Current Level: " + game.data.exp4 + " Cost: " + ((game.data.exp4+1)*10), this.pos.x, this.pos.y + 160);
+				this.font.draw(renderer.getContext(), "W Ability: Eat Creep for Health. Current Level: " + game.data.exp5 + " Cost: " + ((game.data.exp5+1)*10), this.pos.x, this.pos.y + 200);
+				this.font.draw(renderer.getContext(), "E Ability: Throw your spear. Current Level: " + game.data.exp6 + " Cost: " + ((game.data.exp6+1)*10), this.pos.x, this.pos.y + 240);
 			}   
 
 		}));
