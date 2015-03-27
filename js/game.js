@@ -55,7 +55,7 @@ var game = {
 			me.plugin.register.defer(this, debugPanel, "debug");
 		});
 	}
-	me.save.add({exp: 0, exp1: 0,exp: 2, exp3: 0, exp4: 0});
+	// me.save.add({exp: 0, exp1: 0,exp: 2, exp3: 0, exp4: 0});
 
 	me.state.SPENDEXP = 112;
 	me.state.LOAD = 113;
@@ -81,6 +81,7 @@ var game = {
 		me.pool.register("EnemyBase", game.EnemyBaseEntity);
 		me.pool.register("EnemyCreep", game.EnemyCreep, true);
 		me.pool.register("FriendCreep", game.FriendCreep,true);
+		me.pool.register("HeroCreep", game.HeroCreep,true);
 		me.pool.register("GameTimerManager", game.GameTimerManager);
 		me.pool.register("HeroDeathManager", game.HeroDeathManager);
 		me.pool.register("ExperienceManager", game.ExperienceManager);
