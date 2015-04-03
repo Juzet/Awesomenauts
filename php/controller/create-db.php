@@ -18,13 +18,3 @@ require_once(__DIR__ . "/../model/config.php");
 		. "exp4 int(4),"
 		. "PRIMARY KEY (id))");
 
-// this checking to see if the query is outputing the data on the webpageg you to their problem(s)
-// if this is query is true they will echo the following
-		if($query) {
-
-			echo "<p>Successfully created table: users</p>";
-		}
-// if the query is false there will be an error that pop up directin
-		else {
-			echo "<p>" . $_SESSION ["connection"]->error . "</p>";
-		}
