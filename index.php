@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-
 <?php
 	require_once("php/controller/create-db.php");
 ?>
-
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>melonJS Template</title>
@@ -115,7 +113,7 @@
 						else {
 							alert("response");
 						}
-					})
+				})
 
 					.fail(function(response) {
 						alert("Fail");
