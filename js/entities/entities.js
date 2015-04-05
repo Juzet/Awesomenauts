@@ -43,6 +43,8 @@ game.PlayerEntity = me.Entity.extend ({
 		// keeps track of what time it is in the game
 		this.lastHit = this.now;
 		// keeps track of what time it is in the game basically doing the this.now variable	
+		this.lastSpear = this.now;
+		// last spear being thrown at the base or the creep
 		this.lastAttack = new Date().getTime();
 		// this is stopping the attacks
 	},
@@ -78,6 +80,8 @@ game.PlayerEntity = me.Entity.extend ({
 		this.dead = this.checkIfDead();
 
 		this.checkKeyPressesAndMove();
+
+		this.checkAbilityKeys();
 
 		if(me.input.isKeyPressed("attack")) {
 			if (!this.renderable.isCurrentAnimation("attack")) {
@@ -204,7 +208,29 @@ game.PlayerEntity = me.Entity.extend ({
 				response.b.loseHealth(game.data.playerAttack);
 				// if we are attacking and hitting the castle it looses health
 			}
-	}, 
+	},
+	
+	checkAbilityKeys: function() {
+		if(me.input.isKeyPressed("skill1")) {
+			// this.speedBurst();
+		}
+		else if (me.input.isKeyPressed("skill2")){
+			// this.eatCreep();
+		}
+		else if (me.input.isKeyPressed("skill3")){
+			this.throwSpear();
+		}
+
+	},
+
+	throwSpear: function() {
+		if(this.lastSpear >= game.data.spearTimer && game.data.ability3 >= 0) {
+			this.lastSpear = this.now;
+		 	var spear = me.pool.pull("spear", this.pos.x, this.pos.y, {});
+			me.game.world.addChild(spear, 10);
+		}
+	},
+
 	collideWithEnemyCreep: function(response) {
 		var xdif = this.pos.x - response.b.pos.x;
 		var ydif = this.pos.y - response.b.pos.y;

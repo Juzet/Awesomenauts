@@ -17,6 +17,7 @@ var game = {
 		creepMoveSpeed: 5,
 		gameManager: "",
 		HeroDeathManager: "",
+		spearTimer: 15,
 		player: "",
 		exp: 0,
 		// these are going to be used to buy stuff
@@ -86,6 +87,7 @@ var game = {
 		me.pool.register("HeroDeathManager", game.HeroDeathManager);
 		me.pool.register("ExperienceManager", game.ExperienceManager);
 		me.pool.register("SpendGold", game.SpendGold);
+		me.pool.register("spear", game.SpearThrow);
 		// registering the enemy and player base to the pool
 		// the character is being added and connected to the entites file
 		// true says any object you register with true you can make multiple instances of
