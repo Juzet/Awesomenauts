@@ -10,10 +10,12 @@ game.ExperienceManager = Object.extend ({
 		if(game.data.win === true && !this.gameover) {
 		//this is going to do something if I win 
 			this.gameOver(true);
+			alert("YOU WIN!");
 		} 
 		else if(game.data.win === false && !this.gameover) {
 		// this will do something if I loose
 			this.gameOver(false);
+			alert("YOU LOSE!");
 		}
 		return true;
 		// checking all the statements but making sure the result being outputted is true
@@ -34,8 +36,36 @@ game.ExperienceManager = Object.extend ({
 		// this is making sure when you die the data is restarted
 		me.save.exp = game.data.exp;
 		// for testing code purposes
-		console.log("Juzet is awesome " + me.save.exp);
-		me.save.exp2 = 4; 
+		// console.log("Juzet is awesome " + me.save.exp);
+		// me.save.exp2 = 4; 
 		// this is printing out the number of experience you have 
+				me.state.change(me.state.MENU);
+				$.ajax({
+					type: "POST",
+					url: "php/controller/save-user.php",
+					data: {
+						exp: game.data.exp,
+						exp1: game.data.exp1,
+						exp2: game.data.exp2,
+						exp3: game.data.exp3,
+						exp4: game.data.exp4,
+		// filtering the data from the save user
+					},
+
+					dataType: "text"
+				})
+					.success (function(response) {
+						if(response==="true") {
+							me.state.change(me.state.MENU);
+		// we want this to go to the menu state
+						}
+						else {
+							alert("response");
+						}
+				})
+
+					.fail(function(response) {
+						alert("Fail");
+					});
 	}
 });

@@ -1,13 +1,13 @@
 <?php
 	require_once(__DIR__ . "/../model/config.php");
 
-	$array = array{
+	$array = array(
 		'exp' => '',
 		'exp1' => '',
 		'exp2' => '',
 		'exp3' => '',
 		'exp4' => '',
-	};
+	);
 
 // this is also sanitizing the password and username entities 
 	$username = filter_input(INPUT_POST, "username", FILTER_SANITIZE_STRING);
