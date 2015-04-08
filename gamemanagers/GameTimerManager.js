@@ -39,8 +39,10 @@ game.GameTimerManager = Object.extend({
 		 	this.lastCreep = this.now;
 		 	var creepe = me.pool.pull("EnemyCreep", 1000, 0, {});
 		 	me.game.world.addChild(creepe, 5);
+		 	// this is pulling information from the enemy creep
 		 	var friend = me.pool.pull("FriendCreep", 200, 0, {});
 		 	me.game.world.addChild(friend, 5);
+		 	// pulling certain information from the friend creep
 
 		 };
 	},

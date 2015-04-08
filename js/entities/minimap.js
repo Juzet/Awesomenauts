@@ -6,12 +6,16 @@ game.MiniMap = me.Entity.extend ({
 			height: 161,
 			spritewidth: "282",
 			spriteheight: "161",
-
+			// different details of the minimap
+			// height
+			// width
+			// the apperarance of the minimap
 			getShape: function() {
 				return (new me.Rect(0, 0, 282, 161)).toPolygon();
-				// this shows the hight of the bases
+			// this shows the hight of the bases
 			}
 		}]);
 		this.floating = true;
+		// wants the box to be floating
 	}
 });

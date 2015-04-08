@@ -38,10 +38,11 @@ game.resources = [
 	 * @example
 	 * {name: "example_bgm", type: "audio", src: "data/bgm/"},
 	 */	
-	// {name: "what", type: "audio", src: "data/bgm/"},
-	// {name: "blankSpace", type: "audio", src: "data/bgm/"},
-	// {name: "katy1", type: "audio", src: "data/bgm/"},
-	// {name: "miley", type: "audio", src: "data/bgm/"},
+	{name: "coco", type: "audio", src: "data/bgm/"},
+	{name: "what", type: "audio", src: "data/bgm/"},
+	{name: "blankSpace", type: "audio", src: "data/bgm/"},
+	{name: "katy1", type: "audio", src: "data/bgm/"},
+	{name: "miley", type: "audio", src: "data/bgm/"},
 	 
 	/* Sound effects. 
 	 * @example

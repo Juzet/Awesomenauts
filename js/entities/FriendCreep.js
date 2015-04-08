@@ -29,6 +29,7 @@ game.FriendCreep = me.Entity.extend({
 
 	loseHealth: function(damage){
 		this.health = this.health - damage; 
+		// setting the health of the creep
 	},
 
 	update: function(delta){

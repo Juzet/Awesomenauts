@@ -6,7 +6,7 @@ game.EnemyCreep = me.Entity.extend({
 			height: 64,
 			spritewidth: "32",
 			spriteheight: "64",
-
+			// shows basic qualities of the enemy creep
 			getShape: function() {
 				return (new me.Rect(0, 0, 32, 64)).toPolygon();
 				// this shows the hight of the bases
@@ -14,7 +14,9 @@ game.EnemyCreep = me.Entity.extend({
 		}]);
 
 			this.health = game.data.enemyCreepHealth;
+			// going into js and using the creep health set
 			this.alwaysUpdate = true;
+			// always updating the creep
 			this.attacking = false;
 			// this shows us if the enemy is currently attacking
 			this.lastAttacking = new Date().getTime();
@@ -28,12 +30,14 @@ game.EnemyCreep = me.Entity.extend({
 			this.type = "EnemyCreep";
 
 			this.renderable.addAnimation("walk", [3, 4, 5], 80);
+			// displays an animation of a creep
 			this.renderable.setCurrentAnimation("walk");
 		},
 
 			loseHealth: function(damage) {
 
 				this.health = this.health - damage;
+				// setting the health of the creep
 
 			},
 			update: function(delta) {
@@ -79,6 +83,7 @@ game.EnemyCreep = me.Entity.extend({
 
 		if (xdif>0) {
 			this.pos.x = this.pos.x + 1;
+			// this is the position of the enemy creep
 			this.body.vel.x = 0;
 		}
 
