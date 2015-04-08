@@ -5,6 +5,8 @@ var game = {
 	data : {
 		// score
 		score : 0,
+		option1: "",
+		option1: "",	
 		enemyBaseHealth: 1,
 		playerBaseHealth: 1,
 		enemyCreepHealth: 1,
@@ -35,7 +37,9 @@ var game = {
 		win: "",
 		pausePos: "",
 		buyScreen: "",
-		buyText: ""
+		buyText: "",
+		minimap: "",
+		miniPlayer: ""
 		// variable that will affeect the movement etc of the character
 	},
 	
@@ -88,6 +92,8 @@ var game = {
 		me.pool.register("ExperienceManager", game.ExperienceManager);
 		me.pool.register("SpendGold", game.SpendGold);
 		me.pool.register("spear", game.SpearThrow);
+		me.pool.register("minimap", game.MiniMap, true);
+		me.pool.register("miniplayer", game.MiniPlayerLocation, true);
 		// registering the enemy and player base to the pool
 		// the character is being added and connected to the entites file
 		// true says any object you register with true you can make multiple instances of

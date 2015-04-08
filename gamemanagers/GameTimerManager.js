@@ -26,7 +26,7 @@ game.GameTimerManager = Object.extend({
 	goldTimerCheck: function() {
 			 // creep is going to spawn at the same time the gold comes
 		 if(Math.round(this.now/1000)%20 ===0 && (this.now - this.lastCreep >= 1000)) {
-			game.data.gold += game.data.exp1+1;
+			game.data.gold += game.data.exp1+10;
 			console.log("Current gold: " + game.data.gold);
 		 
 		 };

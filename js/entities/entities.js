@@ -2,7 +2,7 @@
 game.PlayerEntity = me.Entity.extend ({
 		init: function(x, y, settings) {
 		// this is a class
-		this.setSuper(x,y);
+		this.setSuper(x,y,settings);
 		// going to make the init function easier
 		this.setPlayerTimers();
 		// setting timers
@@ -19,7 +19,7 @@ game.PlayerEntity = me.Entity.extend ({
 		
 	},
 	// making functions so that the code can look clean and function easier
-	setSuper: function(x,y) {
+	setSuper: function(x,y,settings) {
 		// melon js uses this constructor on most things to help us set up
 		this._super(me.Entity, "init", [x, y, {
 			// this means reaching to the constructor of entites
@@ -212,10 +212,10 @@ game.PlayerEntity = me.Entity.extend ({
 	
 	checkAbilityKeys: function() {
 		if(me.input.isKeyPressed("skill1")) {
-			// this.speedBurst();
+			this.speedBurst();
 		}
 		else if (me.input.isKeyPressed("skill2")){
-			// this.eatCreep();
+			this.eatCreep();
 		}
 		else if (me.input.isKeyPressed("skill3")){
 			this.throwSpear();
@@ -224,9 +224,9 @@ game.PlayerEntity = me.Entity.extend ({
 	},
 
 	throwSpear: function() {
-		if(this.lastSpear >= game.data.spearTimer && game.data.ability3 >= 0) {
+		if((this.now-this.lastSpear) >= game.data.spearTimer*1000 && game.data.ability3 > 0) {
 			this.lastSpear = this.now;
-		 	var spear = me.pool.pull("spear", this.pos.x, this.pos.y, {});
+		 	var spear = me.pool.pull("spear", this.pos.x, this.pos.y, {}, this.facing);
 			me.game.world.addChild(spear, 10);
 		}
 	},
